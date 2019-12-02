@@ -43,12 +43,11 @@ class Cam():
 
         inverted_image = cv2.bitwise_not(thresh2)
         kernel = np.ones((3,3),np.uint8)
-        dilation = cv2.dilate(inverted_image,kernel,iterations = 5)
-        erosion = cv2.erode(dilation,kernel,iterations = 10)
-        dilation_2 = cv2.dilate(erosion,kernel,iterations = 5)
+        erosion = cv2.erode(inverted_image,kernel,iterations = 7)
+        dilation = cv2.dilate(erosion,kernel,iterations = 15)
         #opening = cv2.morphologyEx(inverted_image, cv2.MORPH_OPEN, kernel)
         #dilation_2 = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
-        edged = cv2.Canny(dilation_2, 30, 200) 
+        edged = cv2.Canny(dilation, 30, 200) 
         
         _, contours, _ = cv2.findContours(edged,  
                           cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE) 
@@ -56,8 +55,8 @@ class Cam():
         #cv2.drawContours(dilation_2, contours, -1, (0, 255, 0), -1) 
         for c in contours:
           x,y,w,h = cv2.boundingRect(c)
-          cv2.rectangle(dilation_2, (x, y), (x+w, y+h), (255, 0, 255), 2)
-        cv2.imshow('Objeto', dilation_2)
+          cv2.rectangle(dilation, (x, y), (x+w, y+h), (255, 0, 255), 2)
+        cv2.imshow('Objeto', dilation)
 
         if cv2.waitKey(1) ==1048603:
           exit(0)
