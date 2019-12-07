@@ -1,0 +1,2 @@
+lab4_cam:usb_cam
+-DCATKIN_DEVEL_PREFIX=/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/devel -DCMAKE_INSTALL_PREFIX=/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/install -G Unix Makefiles

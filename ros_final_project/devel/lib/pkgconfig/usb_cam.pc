@@ -1,0 +1,8 @@
+prefix=/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/devel
+
+Name: usb_cam
+Description: Description of usb_cam
+Version: 0.3.6
+Cflags: -I/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/src/usb_cam/include
+Libs: -L/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/devel/lib -lusb_cam
+Requires: 
