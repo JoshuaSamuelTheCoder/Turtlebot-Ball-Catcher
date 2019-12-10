@@ -126,7 +126,9 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build/gtest/cmake_install.cmake")
+  include("/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build/ar_track_alvar/ar_track_alvar_msgs/cmake_install.cmake")
   include("/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build/lab4_cam/cmake_install.cmake")
+  include("/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build/ar_track_alvar/ar_track_alvar/cmake_install.cmake")
   include("/home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build/usb_cam/cmake_install.cmake")
 
 endif()

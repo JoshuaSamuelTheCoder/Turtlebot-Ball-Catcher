@@ -78,17 +78,6 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -99,6 +88,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # Special rule for the target test
 test:
@@ -111,17 +111,6 @@ test/fast: test
 
 .PHONY : test/fast
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: install/strip
-
-.PHONY : install/strip/fast
-
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -132,6 +121,17 @@ install/local: preinstall
 install/local/fast: install/local
 
 .PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: install/strip
+
+.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -166,19 +166,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
-.PHONY : usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
+usb_cam/CMakeFiles/usb_cam.dir/rule:
+	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/usb_cam.dir/rule
+.PHONY : usb_cam/CMakeFiles/usb_cam.dir/rule
 
 # Convenience name for target.
-rosgraph_msgs_generate_messages_cpp: usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
+usb_cam: usb_cam/CMakeFiles/usb_cam.dir/rule
 
-.PHONY : rosgraph_msgs_generate_messages_cpp
+.PHONY : usb_cam
 
 # fast build rule for target.
-rosgraph_msgs_generate_messages_cpp/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
-.PHONY : rosgraph_msgs_generate_messages_cpp/fast
+usb_cam/fast:
+	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/usb_cam.dir/build.make usb_cam/CMakeFiles/usb_cam.dir/build
+.PHONY : usb_cam/fast
 
 # Convenience name for target.
 usb_cam/CMakeFiles/usb_cam_node.dir/rule:
@@ -194,231 +194,6 @@ usb_cam_node: usb_cam/CMakeFiles/usb_cam_node.dir/rule
 usb_cam_node/fast:
 	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/usb_cam_node.dir/build.make usb_cam/CMakeFiles/usb_cam_node.dir/build
 .PHONY : usb_cam_node/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/roscpp_generate_messages_py.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/roscpp_generate_messages_py.dir/rule
-.PHONY : usb_cam/CMakeFiles/roscpp_generate_messages_py.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_py: usb_cam/CMakeFiles/roscpp_generate_messages_py.dir/rule
-
-.PHONY : roscpp_generate_messages_py
-
-# fast build rule for target.
-roscpp_generate_messages_py/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/roscpp_generate_messages_py.dir/build.make usb_cam/CMakeFiles/roscpp_generate_messages_py.dir/build
-.PHONY : roscpp_generate_messages_py/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-.PHONY : usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_eus: usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_eus
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_eus/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
-.PHONY : rosgraph_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-.PHONY : usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_nodejs: usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_nodejs/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
-.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/roscpp_generate_messages_cpp.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-.PHONY : usb_cam/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_cpp: usb_cam/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-
-.PHONY : roscpp_generate_messages_cpp
-
-# fast build rule for target.
-roscpp_generate_messages_cpp/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make usb_cam/CMakeFiles/roscpp_generate_messages_cpp.dir/build
-.PHONY : roscpp_generate_messages_cpp/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/roscpp_generate_messages_eus.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-.PHONY : usb_cam/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_eus: usb_cam/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-
-.PHONY : roscpp_generate_messages_eus
-
-# fast build rule for target.
-roscpp_generate_messages_eus/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/roscpp_generate_messages_eus.dir/build.make usb_cam/CMakeFiles/roscpp_generate_messages_eus.dir/build
-.PHONY : roscpp_generate_messages_eus/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/std_srvs_generate_messages_py.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/std_srvs_generate_messages_py.dir/rule
-.PHONY : usb_cam/CMakeFiles/std_srvs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-std_srvs_generate_messages_py: usb_cam/CMakeFiles/std_srvs_generate_messages_py.dir/rule
-
-.PHONY : std_srvs_generate_messages_py
-
-# fast build rule for target.
-std_srvs_generate_messages_py/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/std_srvs_generate_messages_py.dir/build.make usb_cam/CMakeFiles/std_srvs_generate_messages_py.dir/build
-.PHONY : std_srvs_generate_messages_py/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-.PHONY : usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_py: usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_py
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_py/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
-.PHONY : rosgraph_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-.PHONY : usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_lisp: usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_lisp
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_lisp/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make usb_cam/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
-.PHONY : rosgraph_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-.PHONY : usb_cam/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_nodejs: usb_cam/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-
-.PHONY : roscpp_generate_messages_nodejs
-
-# fast build rule for target.
-roscpp_generate_messages_nodejs/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make usb_cam/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
-.PHONY : roscpp_generate_messages_nodejs/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/std_srvs_generate_messages_cpp.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/std_srvs_generate_messages_cpp.dir/rule
-.PHONY : usb_cam/CMakeFiles/std_srvs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-std_srvs_generate_messages_cpp: usb_cam/CMakeFiles/std_srvs_generate_messages_cpp.dir/rule
-
-.PHONY : std_srvs_generate_messages_cpp
-
-# fast build rule for target.
-std_srvs_generate_messages_cpp/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/std_srvs_generate_messages_cpp.dir/build.make usb_cam/CMakeFiles/std_srvs_generate_messages_cpp.dir/build
-.PHONY : std_srvs_generate_messages_cpp/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/std_srvs_generate_messages_eus.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/std_srvs_generate_messages_eus.dir/rule
-.PHONY : usb_cam/CMakeFiles/std_srvs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-std_srvs_generate_messages_eus: usb_cam/CMakeFiles/std_srvs_generate_messages_eus.dir/rule
-
-.PHONY : std_srvs_generate_messages_eus
-
-# fast build rule for target.
-std_srvs_generate_messages_eus/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/std_srvs_generate_messages_eus.dir/build.make usb_cam/CMakeFiles/std_srvs_generate_messages_eus.dir/build
-.PHONY : std_srvs_generate_messages_eus/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/roscpp_generate_messages_lisp.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-.PHONY : usb_cam/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_lisp: usb_cam/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-.PHONY : roscpp_generate_messages_lisp
-
-# fast build rule for target.
-roscpp_generate_messages_lisp/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make usb_cam/CMakeFiles/roscpp_generate_messages_lisp.dir/build
-.PHONY : roscpp_generate_messages_lisp/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/std_srvs_generate_messages_lisp.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/std_srvs_generate_messages_lisp.dir/rule
-.PHONY : usb_cam/CMakeFiles/std_srvs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-std_srvs_generate_messages_lisp: usb_cam/CMakeFiles/std_srvs_generate_messages_lisp.dir/rule
-
-.PHONY : std_srvs_generate_messages_lisp
-
-# fast build rule for target.
-std_srvs_generate_messages_lisp/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/std_srvs_generate_messages_lisp.dir/build.make usb_cam/CMakeFiles/std_srvs_generate_messages_lisp.dir/build
-.PHONY : std_srvs_generate_messages_lisp/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
-.PHONY : usb_cam/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-std_srvs_generate_messages_nodejs: usb_cam/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
-
-.PHONY : std_srvs_generate_messages_nodejs
-
-# fast build rule for target.
-std_srvs_generate_messages_nodejs/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make usb_cam/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
-.PHONY : std_srvs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-usb_cam/CMakeFiles/usb_cam.dir/rule:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f CMakeFiles/Makefile2 usb_cam/CMakeFiles/usb_cam.dir/rule
-.PHONY : usb_cam/CMakeFiles/usb_cam.dir/rule
-
-# Convenience name for target.
-usb_cam: usb_cam/CMakeFiles/usb_cam.dir/rule
-
-.PHONY : usb_cam
-
-# fast build rule for target.
-usb_cam/fast:
-	cd /home/cc/ee106a/fa19/class/ee106a-adr/Desktop/project/TurtleBotProject/Turtlebot-Ball-Catcher/ros_final_project/build && $(MAKE) -f usb_cam/CMakeFiles/usb_cam.dir/build.make usb_cam/CMakeFiles/usb_cam.dir/build
-.PHONY : usb_cam/fast
 
 nodes/usb_cam_node.o: nodes/usb_cam_node.cpp.o
 
@@ -482,28 +257,13 @@ help:
 	@echo "... depend"
 	@echo "... list_install_components"
 	@echo "... install"
-	@echo "... rosgraph_msgs_generate_messages_cpp"
-	@echo "... usb_cam_node"
-	@echo "... roscpp_generate_messages_py"
-	@echo "... rosgraph_msgs_generate_messages_eus"
-	@echo "... edit_cache"
-	@echo "... rosgraph_msgs_generate_messages_nodejs"
 	@echo "... rebuild_cache"
-	@echo "... roscpp_generate_messages_cpp"
-	@echo "... roscpp_generate_messages_eus"
-	@echo "... std_srvs_generate_messages_py"
+	@echo "... edit_cache"
 	@echo "... test"
-	@echo "... rosgraph_msgs_generate_messages_py"
-	@echo "... rosgraph_msgs_generate_messages_lisp"
-	@echo "... roscpp_generate_messages_nodejs"
-	@echo "... std_srvs_generate_messages_cpp"
-	@echo "... install/strip"
-	@echo "... std_srvs_generate_messages_eus"
-	@echo "... roscpp_generate_messages_lisp"
-	@echo "... std_srvs_generate_messages_lisp"
-	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... usb_cam"
+	@echo "... usb_cam_node"
 	@echo "... install/local"
+	@echo "... install/strip"
 	@echo "... nodes/usb_cam_node.o"
 	@echo "... nodes/usb_cam_node.i"
 	@echo "... nodes/usb_cam_node.s"

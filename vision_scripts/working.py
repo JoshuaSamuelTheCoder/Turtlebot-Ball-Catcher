@@ -55,11 +55,12 @@ class Cam():
         
         _, contours, _ = cv2.findContours(edged,  
                           cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE) 
-        print(len(contours))
+
         #cv2.drawContours(dilation_2, contours, -1, (0, 255, 0), -1) 
         for c in contours:
           x,y,w,h = cv2.boundingRect(c)
           cv2.rectangle(dilation, (x, y), (x+w, y+h), (255, 0, 255), 2)
+          print("center", (x, y))
         cv2.imshow(objeto_string, dilation)
 
         if cv2.waitKey(1) ==1048603:

@@ -282,3 +282,47 @@ projection
 353.457135 0.000000 -12954.704506 1226.682635
 0.000000 353.457135 729.827810 0.000000
 0.000000 0.000000 1.000000 0.000000
+
+------------------------------------
+Transforms from /tf
+
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 1575928511
+        nsecs: 339685158
+      frame_id: "right"
+    child_frame_id: "ar_marker_5"
+    transform: 
+      translation: 
+        x: 0.133166411513
+        y: 0.215015282037
+        z: 0.74458424227
+      rotation: 
+        x: 0.995476024346
+        y: -0.0101395947738
+        z: -0.0919869711741
+        w: -0.0215190776772
+
+transforms: 
+  - 
+    header: 
+      seq: 0
+      stamp: 
+        secs: 1575928511
+        nsecs: 259882132
+      frame_id: "left"
+    child_frame_id: "ar_marker_5"
+    transform: 
+      translation: 
+        x: -0.123669420489
+        y: 0.0784183383604
+        z: 1.9679756281
+      rotation: 
+        x: 0.987134912131
+        y: -0.00767041961091
+        z: 0.0671661540625
+        w: -0.144894919385
+
