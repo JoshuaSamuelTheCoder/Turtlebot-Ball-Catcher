@@ -71,8 +71,8 @@ projPoints2 = np.array([[0.468,0.424,0.469,0.494,0.469,0.458,0.522,0.606,0.527],
 distort_left = np.array(np.array([1.281681, -15.773048, -0.010428, 0.012822, 0.000000]))
 distort_right = np.array(np.array([0.091411, -0.461269, 0.021006, 0.040117, 0.000000]))
 
-RMat1 = quatToRot(np.array([0.995476024346,-0.0101395947738, -0.0919869711741,-0.0215190776772]))
-RMat2 = quatToRot(np.array([0.987134912131,-0.00767041961091, 0.0671661540625,-0.144894919385]))
+RMat1 = quatToRot(np.array([0.992, -0.003, -0.024, 0.122]))
+RMat2 = quatToRot(np.array([0.999, -0.009, -0.019, 0.044]))
 
 
 
@@ -84,10 +84,17 @@ T_right = np.array([-0.123669420489, 0.0784183383604, 1.9679756281]) #----------
 
 T_final = T_left - T_right
 
+P1_stereo = np.array([[4890.538324810042, 0.0, -1734.3179817199707, 0.0],[ 0.0, 4890.538324810042, 398.04181480407715, 0.0],[ 0.0, 0.0, 1.0, 0.0]])
+P2_stereo = np.array([[4890.538324810042, 0.0, -1734.3179817199707, 8092.200252104331],[ 0.0, 4890.538324810042, 398.04181480407715, 0.0],[ 0.0, 0.0, 1.0, 0.0]])
 
 
 R1,R2,P1,P2,Q = cv2.stereoRectify(CMatr1, CMatr2, distort_left, distort_right, (1280, 720), RFinal, T_final)
-points4D = cv2.triangulatePoints(P1, P2, projPoints1, projPoints2)
+
+#Uses P1 and P2 from AR calibration
+#points4D = cv2.triangulatePoints(P1, P2, projPoints1, projPoints2)
+
+#Uses P1 and P2 from stereo calibration
+points4D = cv2.triangulatePoints(P1_stereo, P2_stereo, projPoints1, projPoints2)
 #points4D_sol = cv2.triangulatePoints(projMatr1, projMatr2, projPoints1, projPoints2)
 
 print(points4D)

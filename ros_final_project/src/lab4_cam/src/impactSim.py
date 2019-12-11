@@ -21,7 +21,7 @@ def impactSim():
 	rospy.init_node('impactSim')
 	while not rospy.is_shutdown()
 		# Set a condition for if the ball is not seen.
-		# - Set r_last back to [0,0,0]
+		# - Set r_last back to [nan,nan,nan]
 		# - Don't publish
 		if (...)
 			r_last = np.array([np.nan, np.nan, np.nan])	
@@ -32,11 +32,11 @@ def impactSim():
 		float x = pos.x
 		float y = pos.y
 		float z = pos.z
-		r = np.array([x y z])
+		r = np.array([x, y, z])
 		v = (r-r_last)/dt
 		r_last = r
 		# Step forward in time until the ball's vertical position is 0.
-		while (z > 0)
+		while (r[2] > 0)
 			F_d = -(1/2)*rho*C_D*v*LA.norm(v)
 			F_g = m*g
 			F = F_d + F_g
