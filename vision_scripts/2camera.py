@@ -14,12 +14,13 @@ camera_num = int(sys.argv[1])
 camera_string = 'Camera_' + str(camera_num)
 objeto_string = 'Objeto_' + str(camera_num)
 
-global_hue = 7
+global_hue = 3
 global_sat = 0
 global_val = 0
 
-global_max_hue = 180
-global_max_sat = 133
+global_max_hue = 255
+global_max_sat1 = 189
+global_max_sat2 = 223
 global_max_value = 255
 
 
@@ -32,9 +33,11 @@ class Cam():
     global hue
     global sat
     global val
-   
-    cap0 = cv2.VideoCapture(1)
-    cap1 = cv2.VideoCapture(2)
+    #189
+    #223
+
+    cap0 = cv2.VideoCapture(0)
+    cap1 = cv2.VideoCapture(1)
 
     while True:
       try:
@@ -43,24 +46,25 @@ class Cam():
 
         s = cv2.getTrackbarPos('Max Sat',objeto_string)
         if s == 0:
-        	s = global_max_sat
+        	s = global_max_sat2
 
         lower = np.array([global_hue,global_sat,global_val])
-        upper = np.array([global_max_hue,s,global_max_value])
+        upper_left = np.array([global_max_hue,global_max_sat1,global_max_value])
+        upper_right = np.array([global_max_hue,s,global_max_value])
 
         frame0_hsv = cv2.cvtColor(frame0,cv2.COLOR_BGR2HSV)
         frame0_hsv2 = frame0_hsv.copy()
-        frame0_thresh = cv2.inRange(frame0_hsv,lower, upper)
+        frame0_thresh = cv2.inRange(frame0_hsv,lower, upper_left)
         frame0_thresh = cv2.medianBlur(frame0_thresh,7)
         frame0_thresh2 = frame0_thresh.copy()
 
         frame0_inverted_image = cv2.bitwise_not(frame0_thresh2)
-        frame0_kernel = np.ones((3,3),np.uint8)
+        frame0_kernel = np.ones((2,2),np.uint8)
         frame0_erosion = cv2.erode(frame0_inverted_image,frame0_kernel,iterations = 7)
         frame0_dilation = cv2.dilate(frame0_erosion,frame0_kernel,iterations = 15)
 
         frame0_edged = cv2.Canny(frame0_dilation, 30, 200)         
-        frame0_contours,_ = cv2.findContours(frame0_edged,  
+        _,frame0_contours,_ = cv2.findContours(frame0_edged,  
                           cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE) 
   		
         maxArea = 0
@@ -84,7 +88,7 @@ class Cam():
 
         frame1_hsv = cv2.cvtColor(frame1,cv2.COLOR_BGR2HSV)
         frame1_hsv2 = frame1_hsv.copy()
-        frame1_thresh = cv2.inRange(frame1_hsv,lower, upper)
+        frame1_thresh = cv2.inRange(frame1_hsv,lower, upper_right)
         frame1_thresh = cv2.medianBlur(frame1_thresh,7)
         frame1_thresh2 = frame1_thresh.copy()
 
@@ -94,7 +98,7 @@ class Cam():
         frame1_dilation = cv2.dilate(frame1_erosion,frame1_kernel,iterations = 15)
 
         frame1_edged = cv2.Canny(frame1_dilation, 30, 200)         
-        frame1_contours,_ = cv2.findContours(frame1_edged,  
+        _, frame1_contours,_ = cv2.findContours(frame1_edged,  
                           cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE) 
   
         
