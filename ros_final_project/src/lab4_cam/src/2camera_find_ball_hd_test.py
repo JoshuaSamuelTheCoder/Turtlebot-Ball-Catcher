@@ -26,7 +26,7 @@ global_sat_l = 0
 global_val_l = 0
 
 global_max_hue_l = 180
-global_max_sat_l = 167
+global_max_sat_l = 154
 global_max_val_l = 255
 
 global_max_hue_r = 180
@@ -39,12 +39,8 @@ kern_l = 5
 
 e_its_r = 9
 d_its_r = 15
-kern_r = 4
-#-0.241, 0.874, 4.583
-#-0.648, 0.665, -0.363, -0.080
+kern_r = 5
 
-#Translation: [0.211, 1.034, 3.595]
-#- Rotation: in Quaternion [0.668, -0.605, 0.331, 0.279]
 
 #189
 #224
@@ -98,15 +94,15 @@ class Cam():
     #[0.000000, 2594.436434, 344.505755],
     #[0.000000, 0.000000, 1.000000]]).astype(np.float)
 
-    CMatr1 = np.matrix([[1320.0336187040864, 0.0, 687.6572646271994],
-    [0.0, 1334.9832623892285, 347.3767015522852],
+    CMatr1 = np.matrix([[1199.0608765416198, 0.0, 614.5124090033408],
+    [0.0, 1216.3796974224015, 304.6894283956403],
     [0.000000, 0.000000, 1.000000]]).astype(np.float)
 
     # print("CMatr1", CMatr1)
     #left distortion parameters: 1.281681 -15.773048 -0.010428 0.012822 0.000000
 
-    CMatr2 = np.matrix([[1670.1173542701097, 0.0, 691.0043665967823],
-      [0.0, 1663.3089332573982, 420.5401252978179],
+    CMatr2 = np.matrix([[1094.037974, 0.000000, 626.163067],
+      [0.000000, 1104.123453, 409.408438],
       [0.000000, 0.000000, 1.000000]]).astype(np.float)
 
 
@@ -116,8 +112,8 @@ class Cam():
 
     projPoints2 = np.array([[right_max_x],[right_max_y]]).astype(np.float)
 
-    distort_left = np.array([0.1314910639524331, -0.7149227837321646, 0.004036766848936889, -0.0005848275579192385, 0.0]).astype(np.float)
-    distort_right = np.array([-0.040322917100642314, -0.17611345652059976, -0.0006047241562022043, -0.004318206230349968, 0.0]).astype(np.float)
+    distort_left = np.array([-0.014898312961319021, -0.02745621059658203, 0.0005535088809163774, -0.00707317997328806, 0.0]).astype(np.float)
+    distort_right = np.array([0.007916259563114801, -0.07977699604512571, -0.0015394879448593559, -0.004113051306898727, 0.000000]).astype(np.float)
     # print("distort_left", distort_left)
     # print("distort_right", distort_right)
 
@@ -131,14 +127,14 @@ class Cam():
 
     # R_lt = self.quatToRot(np.array([0.677, -0.673, 0.169, 0.245]))
     # R_rt = self.quatToRot(np.array([-0.042, 0.940, -0.302, 0.157]))
-    R_lt = quaternion_matrix(np.array([0.668, -0.605, 0.331, 0.279]))
-    R_rt = quaternion_matrix(np.array([-0.648, 0.665, -0.363, -0.080]))
+    R_lt = quaternion_matrix(np.array([0.719, 0.694, -0.030, 0.032]))
+    R_rt = quaternion_matrix(np.array([0.727, 0.680, -0.097, 0.023]))
     R_lt = R_lt[:3,:3]
     R_rt = R_rt[:3,:3]
     R_tl = np.linalg.inv(R_lt)
     R_tr = np.linalg.inv(R_rt)
-    T_lt_l = np.array([0.211, 1.034, 3.595]).astype(np.float) #--------------------CHANGE
-    T_rt_r = np.array([-0.241, 0.874, 4.583]).astype(np.float) #--------------------CHANGE
+    T_lt_l = np.array([-0.352, 0.289, 1.774]).astype(np.float) #--------------------CHANGE
+    T_rt_r = np.array([-0.260, 0.183, 2.137]).astype(np.float) #--------------------CHANGE
 
     # R_lt = self.quatToRot(np.array([-0.246, 0.805, -0.492, 0.224]))
     # R_rt = self.quatToRot(np.array([-0.095, 0.884, -0.458, -0.000]))
@@ -163,7 +159,7 @@ class Cam():
     # print("T_rt_r", T_rt_r)
 
     g_lr = np.dot(g_lt,g_tr)
-    # print("g_lr", g_lr)
+    print("g_lr", g_lr)
 
     R_lr = np.dot(R_lt,R_tr)
 
@@ -181,7 +177,7 @@ class Cam():
     #print("T_final", T_final)
     #print(imageSize)
 
-    R1,R2,P1,P2,Q, a,b = cv2.stereoRectify(CMatr1, distort_left, CMatr2, distort_right, (1280,720), R_lr, g_lr[:, 3][:3].reshape((3, 1)))
+    R1,R2,P1,P2,Q, a,b = cv2.stereoRectify(CMatr1, distort_left, CMatr2, distort_right, (1280,720), R_lr, g_lr[:, 3][:3].reshape((3, 1)),  alpha=-1)
     
 
     #print("R1",R1)
@@ -192,8 +188,8 @@ class Cam():
     #pnt1 = cv2.undistortPoints(projPoints1, CMatr1, distort_left, R=RMat1, P=P1)
     #pnt2 = cv2.undistortPoints(projPoints2, CMatr2, distort_right, R=RMat2, P=P2)
 
-    # print("left:",projPoints1)
-    # print("right:", projPoints2)
+    print("left:",projPoints1)
+    print("right:", projPoints2)
 
     points4D = cv2.triangulatePoints(P1, P2, projPoints1, projPoints2)
     #points3D = cv2.convertPointsFromHomogeneous(points4D)
@@ -201,10 +197,8 @@ class Cam():
 
     #Converts 4D to 3D by [x,y,z,w] -> [x/w, y/w, z/w]
     #print(Point(points4D[0]/points4D[3], points4D[1]/points4D[3], points4D[2]/points4D[3]))
-    points3D = np.array([points4D[0]/points4D[3] / 10, points4D[1]/points4D[3] / 10, points4D[2]/points4D[3] / 10, 1])
-    # points3D = np.array([-0.595, 0.438, 5.262, 1])
-    #point_t = np.dot(g_tl,points3D).reshape((4,1))
-    #print(point_t)
+    points3D = np.array([points4D[0]/points4D[3], points4D[1]/points4D[3], points4D[2]/points4D[3], 1])
+    # point_t = np.dot(g_tl,points3D).reshape((4,1))
     point_t = points3D
     return Point(point_t[0],point_t[1],point_t[2])
 
@@ -225,7 +219,7 @@ class Cam():
     self.bridge = CvBridge()
     rospy.Subscriber('/camera_left/left/image_raw', Image, self.update_left)
     rospy.Subscriber('/camera_right/right/image_raw', Image, self.update_right)
-    pub = rospy.Publisher('/ball_position', PointStamped, queue_size=10)
+    #pub = rospy.Publisher('/ball_position', PointStamped, queue_size=10)
     rospy.init_node('findBall')
 
     while not rospy.is_shutdown():
@@ -255,7 +249,7 @@ class Cam():
         frame0_edged = cv2.Canny(frame0_dilation, 30, 200)         
         _,frame0_contours,_ = cv2.findContours(frame0_edged,  
                           cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE) 
-  		
+      
         maxArea = 0
         max_x = None
         max_y = None
@@ -265,8 +259,8 @@ class Cam():
           frame0_x,frame0_y,frame0_w,frame0_h = cv2.boundingRect(c)
           area = frame0_w*frame0_h
           if area > maxArea:
-            max_x = frame0_x
-            max_y = frame0_y
+            max_x = frame0_x + frame0_w / 2
+            max_y = frame0_y + frame0_h / 2
             max_w = frame0_w
             max_h = frame0_h
             maxArea = area
@@ -276,17 +270,16 @@ class Cam():
         left_max_y = max_y
 
         if (left_max_x == None or left_max_y == None):
-          print("No ball") #TODO: Fix this to publish NaN or equivalent
-          pos = PointStamped()
-          pos.point = Point(np.nan,np.nan,np.nan)
+          #print("No ball") #TODO: Fix this to publish NaN or equivalent
+          #pos = PointStamped()
+          #pos.point = Point(np.nan,np.nan,np.nan)
           #pub.publish(pos)
           continue
         #else:
-          print("left", (left_max_x, left_max_y))
-
+          #print(left_max_x, left_max_y)
         
         cv2.rectangle(frame0_dilation, (max_x, max_y), (max_x+max_w, max_y+max_h), (255, 0, 255), 2)
-        #cv2.imshow("camera 1", frame0_dilation)
+        cv2.imshow("camera 1", frame0_dilation)
         
 
         frame1_hsv = cv2.cvtColor(frame1,cv2.COLOR_BGR2HSV)
@@ -311,8 +304,8 @@ class Cam():
           frame1_x,frame1_y,frame1_w,frame1_h = cv2.boundingRect(c)
           area = frame1_w*frame1_h
           if area > maxArea:
-            max_x = frame1_x
-            max_y = frame1_y
+            max_x = frame1_x + frame1_w / 2
+            max_y = frame1_y + frame1_h / 2
             max_w = frame1_w
             max_h = frame1_h
             maxArea = area
@@ -321,21 +314,19 @@ class Cam():
         right_max_y = max_y
         
         if (right_max_x == None or right_max_y == None):
-          pos = PointStamped()
-          pos.point = Point(np.nan,np.nan,np.nan)
+          #pos = PointStamped()
+          #pos.point = Point(np.nan,np.nan,np.nan)
           #pub.publish(pos)
           continue
-        else:
-          print("right", (right_max_x, right_max_y))
 
         cv2.rectangle(frame1_dilation, (max_x, max_y), (max_x+max_w, max_y+max_h), (255, 0, 255), 2)
         cv2.imshow("camera 2", frame1_dilation)
 
-        pos = PointStamped()
+        #pos = PointStamped()
 
-        pos.point = self.get_3d_coords(left_max_x, left_max_y, right_max_x, right_max_y, frame1_dilation.shape[::-1])
-        pos.header.frame_id = 'left'
-        pub.publish(pos)
+        #pos.point = self.get_3d_coords(left_max_x, left_max_y, right_max_x, right_max_y, frame1_dilation.shape[::-1])
+        #pos.header.frame_id = 'ar_marker_5'
+        #pub.publish(pos)
         # if self.counter == 30:
 
 
@@ -359,7 +350,7 @@ class Cam():
 
     #plot the 3D points
 
-  #cv2.namedWindow(objeto_string)
+  cv2.namedWindow("objeto_string")
 
   #cv2.createTrackbar('Max Sat', objeto_string, global_sat, 255, nothing)
 
