@@ -7,7 +7,8 @@
     <param name="pixel_format" value="yuyv" />
     <param name="camera_frame_id" value="left" />
     <param name="io_method" value="mmap"/>
-    <param name="camera_info_url" value="file:///home/cc/ee106a/fa19/class/ee106a-adr/.ros/camera_info/left.yaml" />
+    <!--- Set to head_camera because swapped camera to use better one -->
+    <param name="camera_info_url" value="file:///home/cc/ee106a/fa19/class/ee106a-adr/.ros/camera_info/head_camera.yaml" />
    </node>
   </group>
 
@@ -19,7 +20,8 @@
     <param name="pixel_format" value="yuyv" />
     <param name="camera_frame_id" value="right" />
     <param name="io_method" value="mmap"/>
-    <param name="camera_info_url" value="file:///home/cc/ee106a/fa19/class/ee106a-adr/.ros/camera_info/right.yaml" />
+    <!--- Set to head_camera because swapped camera to use better one -->
+    <param name="camera_info_url" value="file:///home/cc/ee106a/fa19/class/ee106a-adr/.ros/camera_info/head_camera.yaml" />
   </node>
   </group>
 </launch>

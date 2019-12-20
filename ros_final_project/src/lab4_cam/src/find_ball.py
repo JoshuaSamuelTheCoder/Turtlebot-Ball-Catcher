@@ -62,55 +62,15 @@ class Cam():
   def nothing():
     pass
 
-  def quatToRot(self, q):
-      sqw = q[3]*q[3]
-      sqx = q[0]*q[0]
-      sqy = q[1]*q[1]
-      sqz = q[2]*q[2]
-
-      # invs (inverse square length) is only required if quaternion is not already normalised
-      invs = 1 / (sqx + sqy + sqz + sqw)
-      m00 = ( sqx - sqy - sqz + sqw)*invs # since sqw + sqx + sqy + sqz =1/invs*invs
-      m11 = (-sqx + sqy - sqz + sqw)*invs
-      m22 = (-sqx - sqy + sqz + sqw)*invs
-      
-      tmp1 = q[0]*q[1]
-      tmp2 = q[2]*q[3]
-      m10 = 2.0 * (tmp1 + tmp2)*invs
-      m01 = 2.0 * (tmp1 - tmp2)*invs
-      
-      tmp1 = q[0]*q[2]
-      tmp2 = q[1]*q[3]
-      m20 = 2.0 * (tmp1 - tmp2)*invs 
-      m02 = 2.0 * (tmp1 + tmp2)*invs 
-      tmp1 = q[1]*q[2]
-      tmp2 = q[0]*q[3]
-      m21 = 2.0 * (tmp1 + tmp2)*invs
-      m12 = 2.0 * (tmp1 - tmp2)*invs  
-      R = np.matrix([[m00, m01, m02],
-               [m10, m11, m12],
-              [m20,m21,m22]])
-      return R
-
   def get_3d_coords(self, left_max_x, left_max_y, right_max_x, right_max_y, imageSize):
-          #monocular calibration 1 = left 2 = right
-    #CMatr1 = np.matrix([[2531.915668, 0.000000, 615.773452],  
-    #[0.000000, 2594.436434, 344.505755],
-    #[0.000000, 0.000000, 1.000000]]).astype(np.float)
 
     CMatr1 = np.matrix([[1320.0336187040864, 0.0, 687.6572646271994],
     [0.0, 1334.9832623892285, 347.3767015522852],
     [0.000000, 0.000000, 1.000000]]).astype(np.float)
 
-    # print("CMatr1", CMatr1)
-    #left distortion parameters: 1.281681 -15.773048 -0.010428 0.012822 0.000000
-
     CMatr2 = np.matrix([[1670.1173542701097, 0.0, 691.0043665967823],
       [0.0, 1663.3089332573982, 420.5401252978179],
       [0.000000, 0.000000, 1.000000]]).astype(np.float)
-
-
-    # print("CMatr2", CMatr2)
 
     projPoints1 = np.array([[left_max_x],[left_max_y]]).astype(np.float)
 
@@ -118,35 +78,15 @@ class Cam():
 
     distort_left = np.array([0.1314910639524331, -0.7149227837321646, 0.004036766848936889, -0.0005848275579192385, 0.0]).astype(np.float)
     distort_right = np.array([-0.040322917100642314, -0.17611345652059976, -0.0006047241562022043, -0.004318206230349968, 0.0]).astype(np.float)
-    # print("distort_left", distort_left)
-    # print("distort_right", distort_right)
 
-    """"
-    At time 1576037712.126
- Translation: [0.483, 0.150, 1.465]
- Rotation: in Quaternion [0.983, -0.024, -0.179, -0.019]
-            in RPY (radian) [-3.111, 0.360, -0.043]
-            in RPY (degree) [-178.270, 20.613, -2.485]
-  """
-
-    # R_lt = self.quatToRot(np.array([0.677, -0.673, 0.169, 0.245]))
-    # R_rt = self.quatToRot(np.array([-0.042, 0.940, -0.302, 0.157]))
-    R_lt = quaternion_matrix(np.array([0.668, -0.605, 0.331, 0.279]))
-    R_rt = quaternion_matrix(np.array([-0.648, 0.665, -0.363, -0.080]))
+    R_lt = quaternion_matrix(np.array([0.996, -0.038, 0.001, 0.082]))
+    R_rt = quaternion_matrix(np.array([0.969, -0.027, 0.242, 0.037]))
     R_lt = R_lt[:3,:3]
     R_rt = R_rt[:3,:3]
     R_tl = np.linalg.inv(R_lt)
     R_tr = np.linalg.inv(R_rt)
-    T_lt_l = np.array([0.211, 1.034, 3.595]).astype(np.float) #--------------------CHANGE
-    T_rt_r = np.array([-0.241, 0.874, 4.583]).astype(np.float) #--------------------CHANGE
-
-    # R_lt = self.quatToRot(np.array([-0.246, 0.805, -0.492, 0.224]))
-    # R_rt = self.quatToRot(np.array([-0.095, 0.884, -0.458, -0.000]))
-    # R_tl = np.linalg.inv(R_lt)
-    # R_tr = np.linalg.inv(R_rt)
-
-    # T_lt_l = np.array([-1.300, 1.832, 1.323]).astype(np.float) #--------------------CHANGE
-    # T_rt_r = np.array([-0.307, 2.070, 1.287]).astype(np.float) 
+    T_lt_l = np.array([0.053, -0.110, 1.866]).astype(np.float) #--------------------CHANGE
+    T_rt_r = np.array([-0.266, -0.058, 2.388]).astype(np.float) #--------------------CHANGE
 
     g_lt_1 = np.hstack((R_lt, T_lt_l.reshape((3,1)))) 
     g_lt_2 = np.array([0,0,0,1])
@@ -158,49 +98,17 @@ class Cam():
     g_rt_2 = np.array([0,0,0,1])
     g_rt = np.vstack((g_rt_1,g_rt_2.T)) 
     g_tr = np.linalg.inv(g_rt)
-    # print("g_rt", g_rt)
-    # print("R_rt", R_rt)
-    # print("T_rt_r", T_rt_r)
 
     g_lr = np.dot(g_lt,g_tr)
-    # print("g_lr", g_lr)
 
     R_lr = np.dot(R_lt,R_tr)
-
-    # print(g_lr[:, 3][:3])
-    # print("predicted value: ", np.dot(R_lt, np.array(g_tr[:, 3][:3])) + T_lt_l.reshape(3,1))
-    #print('glr col: ', g_lr[:, 3])
-    #print('glr:', g_lr)
-    # T_rt_r_hom = np.array([T_rt_r[0],T_rt_r[1],T_rt_r[2],1])
-    # T_rt_l_hom = np.dot(g_lr,T_rt_r_hom)
-    # T_rt_l = np.array([T_rt_l_hom[0,0],T_rt_l_hom[0,1],T_rt_l_hom[0,2]])
-    # T_lr_l = T_lt_l - T_rt_l
-    #print('T_lr: ', T_lr_l)
-
-    #print("RFinal", RFinal)
-    #print("T_final", T_final)
-    #print(imageSize)
 
     R1,R2,P1,P2,Q, a,b = cv2.stereoRectify(CMatr1, distort_left, CMatr2, distort_right, (1280,720), R_lr, g_lr[:, 3][:3].reshape((3, 1)))
     
 
-    #print("R1",R1)
-    #print("R2",R2)CMatr1
-    #print("P1",P1)
-    #print("P2",P2)
-
-    #pnt1 = cv2.undistortPoints(projPoints1, CMatr1, distort_left, R=RMat1, P=P1)
-    #pnt2 = cv2.undistortPoints(projPoints2, CMatr2, distort_right, R=RMat2, P=P2)
-
-    # print("left:",projPoints1)
-    # print("right:", projPoints2)
-
     points4D = cv2.triangulatePoints(P1, P2, projPoints1, projPoints2)
-    #points3D = cv2.convertPointsFromHomogeneous(points4D)
-    #print(points4D)
 
     #Converts 4D to 3D by [x,y,z,w] -> [x/w, y/w, z/w]
-    #print(Point(points4D[0]/points4D[3], points4D[1]/points4D[3], points4D[2]/points4D[3]))
     points3D = np.array([points4D[0]/points4D[3] / 10, points4D[1]/points4D[3] / 10, points4D[2]/points4D[3] / 10, 1])
     # points3D = np.array([-0.595, 0.438, 5.262, 1])
     #point_t = np.dot(g_tl,points3D).reshape((4,1))
@@ -357,48 +265,8 @@ class Cam():
       except ThreadError:
         self.thread_cancelled = True
 
-    #plot the 3D points
-
-  #cv2.namedWindow(objeto_string)
-
-  #cv2.createTrackbar('Max Sat', objeto_string, global_sat, 255, nothing)
-
     
 if __name__ == "__main__":
   cam = Cam()
   cam.findBall()
-
-
-
-"""
-At time 1576037452.137
-- Translation: [0.401, -0.761, 1.816]
-- Rotation: in Quaternion [0.956, 0.034, -0.232, -0.178]
-            in RPY (radian) [-2.735, 0.446, 0.165]
-            in RPY (degree) [-156.729, 25.529, 9.471]
-
-
-At time 1576037490.037
-- Translation: [-0.592, -0.513, 1.596]
-- Rotation: in Quaternion [0.955, -0.043, 0.261, -0.135]
-            in RPY (radian) [-2.815, -0.508, -0.175]
-            in RPY (degree) [-161.261, -29.107, -10.051]
-source: target
-"""
-"""
-left: ar
-At time 1576037712.126
-- Translation: [0.483, 0.150, 1.465]
-- Rotation: in Quaternion [0.983, -0.024, -0.179, -0.019]
-            in RPY (radian) [-3.111, 0.360, -0.043]
-            in RPY (degree) [-178.270, 20.613, -2.485]
-right :ar
-
-At time 1576037761.638
-- Translation: [-0.135, 0.127, 1.588]
-- Rotation: in Quaternion [0.966, -0.056, 0.253, 0.015]
-            in RPY (radian) [3.142, -0.512, -0.116]
-            in RPY (degree) [179.998, -29.325, -6.643]
-
-"""
 

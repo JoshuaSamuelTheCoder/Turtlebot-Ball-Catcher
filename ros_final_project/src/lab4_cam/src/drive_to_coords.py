@@ -10,7 +10,7 @@ import rospy
 import tf2_ros
 import sys
 
-from geometry_msgs.msg import Twist, Vector3
+from geometry_msgs.msg import Twist, Vector3, TransformStamped
 
 #Define the method which contains the main functionality of the node.
 def controller(turtlebot_frame, goal_frame):
@@ -28,6 +28,7 @@ def controller(turtlebot_frame, goal_frame):
   pub = rospy.Publisher("/yellow/mobile_base/commands/velocity", Twist, queue_size=10)
   tfBuffer = tf2_ros.Buffer()
   tfListener = tf2_ros.TransformListener(tfBuffer)
+  br = tf2_ros.TransformBroadcaster()
   
   # Create a timer object that will sleep long enough to result in
   # a 10Hz publishing rate
@@ -40,19 +41,31 @@ def controller(turtlebot_frame, goal_frame):
   while not rospy.is_shutdown():
     try:
       #print("Before")
-      goal_x = goal_frame.trans.transform.x
-      goal_y = goal_frame.trans.transform.y
-      goal_z = goal_frame.trans.transform.z
-      #trans = tfBuffer.lookup_transform(turtlebot_frame, goal_frame, rospy.Time())
+      rospy.sleep(0.1)
+      t = TransformStamped()
+      t.header.stamp = rospy.Time.now()
+      t.transform.translation.x = 0
+      t.transform.translation.y = 0
+      t.transform.translation.z = 0
 
-      difference_x = goal_x - turtlebot_frame.transform.x
-      difference_y = goal_y - turtlebot_frame.transform.y
+      t.transform.rotation.x = 0
+      t.transform.rotation.y = 0
+      t.transform.rotation.z = -0.707
+      t.transform.rotation.w = 0.707
+      t.header.frame_id = "left"
+      t.child_frame_id = "ball"
+
+      br.sendTransform(t)
+
+      #t.header.frame_id = "test"
+      trans = tfBuffer.lookup_transform(turtlebot_frame, "left", rospy.Time())
+
       #print("After")
       # Process trans to get your state error
       # Generate a control command to send to the robot
       #print(trans)
-      x = difference_x * Ks[0]
-      theta = difference_y * Ks[1]
+      x = trans.transform.translation.x * Ks[0]
+      theta = trans.transform.translation.y * Ks[1]
       #print(turtlebot_frame)
       control_command = Twist(Vector3(x, 0, 0), Vector3(0, 0, theta))
 

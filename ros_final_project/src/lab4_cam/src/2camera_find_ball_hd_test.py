@@ -114,7 +114,7 @@ class Cam():
 
     distort_left = np.array([-0.014898312961319021, -0.02745621059658203, 0.0005535088809163774, -0.00707317997328806, 0.0]).astype(np.float)
     distort_right = np.array([0.007916259563114801, -0.07977699604512571, -0.0015394879448593559, -0.004113051306898727, 0.000000]).astype(np.float)
-    # print("distort_left", distort_left)
+    # print("distort_left", distort_left)e
     # print("distort_right", distort_right)
 
     """"
