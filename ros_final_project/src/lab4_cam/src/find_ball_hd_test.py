@@ -20,9 +20,9 @@ val = 10
 hue2 = 180
 sat2 = 159  
 val2 = 255
-e_its = 7
-d_its = 15
-kern = 5
+e_its = 10
+d_its = 14
+kern = 7
 
 global_hue = 3
 global_sat = 0
@@ -73,7 +73,7 @@ class Cam():
     rate = rospy.Time(30)
 
     self.bridge = CvBridge()
-    rospy.Subscriber('/camera_right/right/image_raw', Image, self.update_left)
+    rospy.Subscriber('/camera_left/left/image_raw', Image, self.update_left)
     #rospy.Subscriber('/camera_right/right/image_raw', Image, self.update_right)
     #pub = rospy.Publisher('/ball_position', PointStamped, queue_size=10)
     rospy.init_node('findBall')

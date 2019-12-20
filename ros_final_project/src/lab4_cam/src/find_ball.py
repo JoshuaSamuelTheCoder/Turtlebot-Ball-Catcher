@@ -26,20 +26,20 @@ global_sat_l = 0
 global_val_l = 0
 
 global_max_hue_l = 180
-global_max_sat_l = 167
+global_max_sat_l = 181
 global_max_val_l = 255
 
 global_max_hue_r = 180
 global_max_sat_r= 154
 global_max_val_r = 255
 
-e_its_l = 7
-d_its_l = 15
-kern_l = 5
+e_its_l = 10
+d_its_l = 14
+kern_l = 7
 
-e_its_r = 9
-d_its_r = 15
-kern_r = 4
+e_its_r = 10
+d_its_r = 14
+kern_r = 7
 #-0.241, 0.874, 4.583
 #-0.648, 0.665, -0.363, -0.080
 
@@ -64,29 +64,34 @@ class Cam():
 
   def get_3d_coords(self, left_max_x, left_max_y, right_max_x, right_max_y, imageSize):
 
-    CMatr1 = np.matrix([[1320.0336187040864, 0.0, 687.6572646271994],
-    [0.0, 1334.9832623892285, 347.3767015522852],
+    CMatr1 = np.matrix([[954.855635, 0.000000, 624.429606],
+    [0.000000, 952.447679, 369.699299],
     [0.000000, 0.000000, 1.000000]]).astype(np.float)
 
-    CMatr2 = np.matrix([[1670.1173542701097, 0.0, 691.0043665967823],
-      [0.0, 1663.3089332573982, 420.5401252978179],
+    CMatr2 = np.matrix([[974.873243, 0.000000, 661.429672],
+      [0.000000, 977.204120, 380.550973],
       [0.000000, 0.000000, 1.000000]]).astype(np.float)
 
     projPoints1 = np.array([[left_max_x],[left_max_y]]).astype(np.float)
 
     projPoints2 = np.array([[right_max_x],[right_max_y]]).astype(np.float)
 
-    distort_left = np.array([0.1314910639524331, -0.7149227837321646, 0.004036766848936889, -0.0005848275579192385, 0.0]).astype(np.float)
-    distort_right = np.array([-0.040322917100642314, -0.17611345652059976, -0.0006047241562022043, -0.004318206230349968, 0.0]).astype(np.float)
+    distort_left = np.array([0.039887, -0.113282, 0.000864, 0.000831, 0.000000]).astype(np.float)
+    distort_right = np.array([0.010096, -0.070900, 0.002032, -0.013537, 0.000000]).astype(np.float)
 
-    R_lt = quaternion_matrix(np.array([0.996, -0.038, 0.001, 0.082]))
-    R_rt = quaternion_matrix(np.array([0.969, -0.027, 0.242, 0.037]))
+    R_lt = quaternion_matrix(np.array([0.588, -0.529, 0.390, 0.471]))
+    # R_lt = quaternion_matrix(np.array([0.596, -0.519, 0.382, -0.479]))
+    R_rt = quaternion_matrix(np.array([-0.352, 0.738, -0.496, -0.292]))
+    # R_rt = quaternion_matrix(np.array([-0.511, 0.746, 0.202, -0.375]))
+
     R_lt = R_lt[:3,:3]
     R_rt = R_rt[:3,:3]
     R_tl = np.linalg.inv(R_lt)
     R_tr = np.linalg.inv(R_rt)
-    T_lt_l = np.array([0.053, -0.110, 1.866]).astype(np.float) #--------------------CHANGE
-    T_rt_r = np.array([-0.266, -0.058, 2.388]).astype(np.float) #--------------------CHANGE
+    T_lt_l = np.array([-0.027, 0.832, 3.088]).astype(np.float) #--------------------CHANGE
+    # T_lt_l = np.array([-2.735, -0.500, 1.565]).astype(np.float) #--------------------CHANGE
+    T_rt_r = np.array([-0.750, 0.782, 3.081]).astype(np.float) #--------------------CHANGE
+    # T_rt_r = np.array([2.688, -0.886, 1.726]).astype(np.float) #--------------------CHANGE
 
     g_lt_1 = np.hstack((R_lt, T_lt_l.reshape((3,1)))) 
     g_lt_2 = np.array([0,0,0,1])
@@ -103,7 +108,7 @@ class Cam():
 
     R_lr = np.dot(R_lt,R_tr)
 
-    R1,R2,P1,P2,Q, a,b = cv2.stereoRectify(CMatr1, distort_left, CMatr2, distort_right, (1280,720), R_lr, g_lr[:, 3][:3].reshape((3, 1)))
+    R1,R2,P1,P2,Q, a,b = cv2.stereoRectify(CMatr1, distort_left, CMatr2, distort_right, (1280,720), R_lr, g_lr[:, 3][:3].reshape((3, 1)), alpha=-1)
     
 
     points4D = cv2.triangulatePoints(P1, P2, projPoints1, projPoints2)
@@ -173,8 +178,8 @@ class Cam():
           frame0_x,frame0_y,frame0_w,frame0_h = cv2.boundingRect(c)
           area = frame0_w*frame0_h
           if area > maxArea:
-            max_x = frame0_x
-            max_y = frame0_y
+            max_x = frame0_x + frame0_w/2
+            max_y = frame0_y + frame0_h/2
             max_w = frame0_w
             max_h = frame0_h
             maxArea = area
@@ -219,8 +224,8 @@ class Cam():
           frame1_x,frame1_y,frame1_w,frame1_h = cv2.boundingRect(c)
           area = frame1_w*frame1_h
           if area > maxArea:
-            max_x = frame1_x
-            max_y = frame1_y
+            max_x = frame1_x + frame1_w/2
+            max_y = frame1_y + frame1_h/2
             max_w = frame1_w
             max_h = frame1_h
             maxArea = area

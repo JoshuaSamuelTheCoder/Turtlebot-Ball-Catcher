@@ -14,14 +14,25 @@ camera_num = int(sys.argv[1])
 camera_string = 'Camera_' + str(camera_num)
 objeto_string = 'Objeto_' + str(camera_num)
 
-global_hue = 3
+global_hue = 2
+global_hue_2 = 3
 global_sat = 0
 global_val = 0
 
-global_max_hue = 255
-global_max_sat1 = 189
-global_max_sat2 = 223
+global_max_hue = 173
+global_max_sat1 = 255
+global_max_sat2 = 255
 global_max_value = 255
+#189
+#224
+
+left_max_x = 0
+left_max_y = 0
+right_max_x = 0
+right_max_y = 0
+
+left_max_Area = 0
+right_max_Area = 0
 
 
 
@@ -46,20 +57,21 @@ class Cam():
 
         s = cv2.getTrackbarPos('Max Sat',objeto_string)
         if s == 0:
-        	s = global_max_sat2
+        	s = global_max_sat1
 
-        lower = np.array([global_hue,global_sat,global_val])
-        upper_left = np.array([global_max_hue,global_max_sat1,global_max_value])
-        upper_right = np.array([global_max_hue,s,global_max_value])
+        lower_left = np.array([global_hue,global_sat,global_val])
+        lower_right = np.array([global_hue_2,global_sat,global_val])
+        upper_left = np.array([global_max_hue,s,global_max_value])
+        upper_right = np.array([global_max_hue,global_max_sat2,global_max_value])
 
         frame0_hsv = cv2.cvtColor(frame0,cv2.COLOR_BGR2HSV)
         frame0_hsv2 = frame0_hsv.copy()
-        frame0_thresh = cv2.inRange(frame0_hsv,lower, upper_left)
+        frame0_thresh = cv2.inRange(frame0_hsv,lower_left, upper_left)
         frame0_thresh = cv2.medianBlur(frame0_thresh,7)
         frame0_thresh2 = frame0_thresh.copy()
 
         frame0_inverted_image = cv2.bitwise_not(frame0_thresh2)
-        frame0_kernel = np.ones((2,2),np.uint8)
+        frame0_kernel = np.ones((3,3),np.uint8)
         frame0_erosion = cv2.erode(frame0_inverted_image,frame0_kernel,iterations = 7)
         frame0_dilation = cv2.dilate(frame0_erosion,frame0_kernel,iterations = 15)
 
@@ -76,10 +88,15 @@ class Cam():
           frame0_x,frame0_y,frame0_w,frame0_h = cv2.boundingRect(c)
           area = frame0_w*frame0_h
           if area > maxArea:
-          	max_x = frame0_x
-          	max_y = frame0_y
-          	max_w = frame0_w
-          	max_h = frame0_h
+            max_x = frame0_x
+            max_y = frame0_y
+            max_w = frame0_w
+            max_h = frame0_h
+            maxArea = area
+            left_max_Area = area
+
+        left_max_x = max_x
+        left_max_y = max_y
         
         cv2.rectangle(frame0_dilation, (max_x, max_y), (max_x+max_w, max_y+max_h), (255, 0, 255), 2)
         cv2.imshow("camera 1", frame0_dilation)
@@ -88,7 +105,7 @@ class Cam():
 
         frame1_hsv = cv2.cvtColor(frame1,cv2.COLOR_BGR2HSV)
         frame1_hsv2 = frame1_hsv.copy()
-        frame1_thresh = cv2.inRange(frame1_hsv,lower, upper_right)
+        frame1_thresh = cv2.inRange(frame1_hsv,lower_right, upper_right)
         frame1_thresh = cv2.medianBlur(frame1_thresh,7)
         frame1_thresh2 = frame1_thresh.copy()
 
@@ -111,14 +128,22 @@ class Cam():
           frame1_x,frame1_y,frame1_w,frame1_h = cv2.boundingRect(c)
           area = frame1_w*frame1_h
           if area > maxArea:
-          	max_x = frame1_x
-          	max_y = frame1_y
-          	max_w = frame1_w
-          	max_h = frame1_h
+            max_x = frame1_x
+            max_y = frame1_y
+            max_w = frame1_w
+            max_h = frame1_h
+            maxArea = area
+            right_max_Area = area
+
+        right_max_x = max_x
+        right_max_y = max_y
         
         cv2.rectangle(frame1_dilation, (max_x, max_y), (max_x+max_w, max_y+max_h), (255, 0, 255), 2)
         cv2.imshow("camera 2", frame1_dilation)
 
+        print("left_cam:", left_max_x, left_max_y)
+        print("right_cam:", right_max_x, right_max_y)
+        #print(maxArea)
 
         if cv2.waitKey(1) ==1048603:
           exit(0)
