@@ -1,2 +1,6 @@
 # Turtlebot-Ball-Catcher
-EE106a Project Fall 2019
+A robotics project written in python with ROS
+
+Check out https://teebeebeecee.weebly.com/ for more information regarding the project.
+
+
